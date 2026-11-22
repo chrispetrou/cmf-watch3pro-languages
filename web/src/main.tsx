@@ -13,11 +13,13 @@ import "./index.css";
 import "./watch.css";
 
 // Browsers only download a font file once text on the page needs it, so switching to Greek
-// briefly showed the title in the fallback font while Tektur's Greek file loaded. Fetch it
-// (and Inter's Greek file for the body text) up front so the switch is instant.
+// briefly showed the title in the fallback font while Tektur loaded. Fetch the files the Greek
+// page needs up front: Tektur's Greek and Latin files (the title has "CMF Watch 3 Pro" in it)
+// and Inter's Greek file for the body text.
 if ("fonts" in document) {
-  for (const face of ['600 1em "Tektur Variable"', '400 1em "Inter Variable"'])
-    document.fonts.load(face, "Ελληνικά").catch(() => { /* fallback font is fine */ });
+  const load = (face: string, text: string) => document.fonts.load(face, text).catch(() => { /* fallback font is fine */ });
+  load('600 1em "Tektur Variable"', "Ελληνικά CMF Watch");
+  load('400 1em "Inter Variable"', "Ελληνικά");
 }
 
 // Refuse to run inside another site's frame, where a visitor could be tricked into clicking
